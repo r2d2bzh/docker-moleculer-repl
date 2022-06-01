@@ -8,7 +8,6 @@ const broker = new ServiceBroker({
 broker
   .start()
   .then(() => {
-    broker.getLogger('index').info(broker.repl);
     return broker.repl({ customCommands: [] });
   })
   .catch((error) => {
