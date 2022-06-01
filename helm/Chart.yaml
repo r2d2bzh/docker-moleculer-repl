@@ -5,6 +5,6 @@
 # { "r2d2bzh": { "helm": { "chart": { ... } } } }
 apiVersion: v1
 name: docker-moleculer-tools
-version: 0.0.0
+version: 0.0.1
 description: ''
-appVersion: 0.0.0
+appVersion: 0.0.1
