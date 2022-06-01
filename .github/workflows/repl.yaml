@@ -1,0 +1,42 @@
+name: repl
+
+on:
+  push:
+    branches: [ master ]
+    tags: [ '*.*.*' ]
+
+env:
+  VERSION: ${{ github.ref_name }}
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set environment
+        run: |
+          echo "UID=$(id -u)" >> .env
+          echo "GID=$(id -g)" >> .env
+
+      - name: Build share image
+        run: docker-compose build share
+
+      - name: Build repl image
+        run: docker-compose build repl.rel
+
+      - name: Log into registry
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push repl image
+        run: docker-compose push repl.rel
